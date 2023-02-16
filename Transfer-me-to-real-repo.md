@@ -4,16 +4,12 @@ output:
   html_document: 
     toc: yes
     keep_md: yes
-date: "`r Sys.Date()`"
+date: "2023-02-16"
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-```
 
-```{r}
 
-```
+
 
 new test
 hello
