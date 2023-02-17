@@ -15,8 +15,263 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ```
 
-new test
-hello
-hello
-hello
 
+
+Required libraries:
+```{r}
+library(rmarkdown)
+
+## load the library for crqa
+library(Matrix)
+library(tseriesChaos)
+library(crqa)
+
+## load the library for plotting
+library(tidyverse)
+library(ggplot2)
+library(ggpubr)
+
+```
+
+Go to the folder where data are located:
+```{r}
+
+setwd("C:/Users/iView/Desktop/Haraped/dyad 01-03") #set this to where your data is located
+```
+
+Load Data
+```{r}
+
+# Loading the raw data files from Walter.
+
+
+#Dyad1
+dyad01_p01_s01b_trial1 <- read.delim("dyad01-p01_s01b-trial1.csv",header=TRUE,fill=TRUE,sep = ",", dec = ".")
+
+dyad01_p01_s01b_trial2 <- read.delim("dyad01-p01_s01b-trial2.csv",header=TRUE,fill=TRUE,sep = ",", dec = ".")
+
+dyad01_p02_s01y_trial1 <- read.delim("dyad01-p02_s01y-trial1.csv",header=TRUE,fill=TRUE,sep = ",", dec = ".")
+
+dyad01_p02_s01y_trial2 <- read.delim("dyad01-p02_s01y-trial2.csv",header=TRUE,fill=TRUE,sep = ",", dec = ".")
+
+#Dyad2
+dyad02_p03_s02b_trial1 <- read.delim("dyad02-p03_s02b-trial1.csv",header=TRUE,fill=TRUE,sep = ",", dec = ".")
+
+dyad02_p03_s02b_trial2 <- read.delim("dyad02-p03_s02b-trial2.csv",header=TRUE,fill=TRUE,sep = ",", dec = ".")
+
+dyad02_p04_s02y_trial1 <- read.delim("dyad02-p04_s02y-trial1.csv",header=TRUE,fill=TRUE,sep = ",", dec = ".")
+
+dyad02_p04_s02y_trial2 <- read.delim("dyad02-p04_s02y-trial2.csv",header=TRUE,fill=TRUE,sep = ",", dec = ".")
+
+
+#Dyad3
+dyad03_p05_s03b_trial1 <- read.delim("dyad03-p05_s03b-trial1.csv",header=TRUE,fill=TRUE,sep = ",", dec = ".")
+
+dyad03_p05_s03b_trial2 <- read.delim("dyad03-p05_s03b-trial2.csv",header=TRUE,fill=TRUE,sep = ",", dec = ".")
+
+dyad03_p06_s03y_trial1 <- read.delim("dyad03-p06_s03y-trial1.csv",header=TRUE,fill=TRUE,sep = ",", dec = ".")
+
+dyad03_p06_s03y_trial2 <- read.delim("dyad03-p06_s03y-trial2.csv",header=TRUE,fill=TRUE,sep = ",", dec = ".")
+
+
+
+```
+
+
+
+
+RQA trial1
+```{r}
+RA_dyad1_trial1 <- crqa(ts1 = dyad01_p01_s01b_trial1$Region, ts2 = dyad01_p02_s01y_trial1$Region, delay = 1, embed = 1, rescale = 0, radius = 0.0001, normalize = 0, mindiagline = 2, minvertline = 2, tw = 0, whiteline = FALSE, recpt = FALSE, side = "both")
+
+
+
+RA_dyad2_trial1 <- crqa(ts1 = dyad02_p03_s02b_trial1$Region, ts2 = dyad02_p04_s02y_trial1$Region, delay = 1, embed = 1, rescale = 0, radius = 0.0001, normalize = 0, mindiagline = 2, minvertline = 2, tw = 0, whiteline = FALSE, recpt = FALSE, side = "both")
+
+
+
+RA_dyad3_trial1 <- crqa(ts1 = dyad03_p05_s03b_trial1$Region, ts2 = dyad03_p06_s03y_trial1$Region, delay = 1, embed = 1, rescale = 0, radius = 0.0001, normalize = 0, mindiagline = 2, minvertline = 2, tw = 0, whiteline = FALSE, recpt = FALSE, side = "both")
+
+
+
+```
+
+
+
+RQA trial2
+```{r}
+RA_dyad1_trial2 <- crqa(ts1 = dyad01_p01_s01b_trial2$Region, ts2 = dyad01_p02_s01y_trial2$Region, delay = 1, embed = 1, rescale = 0, radius = 0.0001, normalize = 0, mindiagline = 2, minvertline = 2, tw = 0, whiteline = FALSE, recpt = FALSE, side = "both")
+
+
+
+RA_dyad2_trial2 <- crqa(ts1 = dyad02_p03_s02b_trial2$Region, ts2 = dyad02_p04_s02y_trial2$Region, delay = 1, embed = 1, rescale = 0, radius = 0.0001, normalize = 0, mindiagline = 2, minvertline = 2, tw = 0, whiteline = FALSE, recpt = FALSE, side = "both")
+
+
+
+RA_dyad3_trial2 <- crqa(ts1 = dyad03_p05_s03b_trial2$Region, ts2 = dyad03_p06_s03y_trial2$Region, delay = 1, embed = 1, rescale = 0, radius = 0.0001, normalize = 0, mindiagline = 2, minvertline = 2, tw = 0, whiteline = FALSE, recpt = FALSE, side = "both")
+
+
+
+```
+
+
+Plotting Recurrence Plots
+```{r}
+
+
+```
+
+
+PlottingDCRPs
+```{r}
+#### Trial 1
+
+
+windowsize <- 150
+sample_rate = 1/5
+timecourse <- seq(-30,30, 1/5)
+#timecourse = round( seq(-windowsize,windowsize,sample_rate)/sample_rate, digit = 1) #define x-axis of DCRP
+
+DCRP_dyad1_trial1 <- drpfromts(ts1 = dyad01_p01_s01b_trial1$Region, ts2 = dyad01_p02_s01y_trial1$Region, windowsize = windowsize, datatype = "categorical", radius = 0.000001)
+
+DCRP_dyad2_trial1 <- drpfromts(ts1 = dyad02_p03_s02b_trial1$Region, ts2 = dyad02_p04_s02y_trial1$Region, windowsize = windowsize, datatype = "categorical", radius = 0.000001)
+
+DCRP_dyad3_trial1 <- drpfromts(ts1 = dyad03_p05_s03b_trial1$Region, ts2 = dyad03_p06_s03y_trial1$Region, windowsize = windowsize, datatype = "categorical", radius = 0.000001)
+
+
+
+
+#### Trial 2
+
+
+
+
+DCRP_dyad1_trial2 <- drpfromts(ts1 = dyad01_p01_s01b_trial2$Region, ts2 = dyad01_p02_s01y_trial2$Region, windowsize = windowsize, datatype = "categorical", radius = 0.000001)
+
+DCRP_dyad2_trial2 <- drpfromts(ts1 = dyad02_p03_s02b_trial2$Region, ts2 = dyad02_p04_s02y_trial2$Region, windowsize = windowsize, datatype = "categorical", radius = 0.000001)
+
+DCRP_dyad3_trial2 <- drpfromts(ts1 = dyad03_p05_s03b_trial2$Region, ts2 = dyad03_p06_s03y_trial2$Region, windowsize = windowsize, datatype = "categorical", radius = 0.000001)
+
+
+```
+
+
+
+Windowed Cross Recurrence Profile
+```{r}
+suppressWarnings(
+
+winprofile_d1t1 <- wincrqa(ts1 = dyad01_p01_s01b_trial2$Region, ts2 = dyad01_p02_s01y_trial2$Region, windowstep = 5, windowsize = 50, delay = 1, embed = 1, rescale = 0, radius = 0.0001, normalize = 0, mindiagline = 2, minvertline = 2, tw = 0, whiteline = FALSE, recpt = FALSE, side = "both")
+)
+
+suppressWarnings(
+
+winprofile_d2t1 <- wincrqa(ts1 = dyad02_p03_s02b_trial1$Region, ts2 = dyad02_p04_s02y_trial1$Region, windowstep = 5, windowsize = 50, delay = 1, embed = 1, rescale = 0, radius = 0.0001, normalize = 0, mindiagline = 2, minvertline = 2, tw = 0, whiteline = FALSE, recpt = FALSE, side = "both")
+)
+suppressWarnings(
+
+winprofile_d3t1 <- wincrqa(ts1 = dyad03_p05_s03b_trial1$Region, ts2 = dyad03_p06_s03y_trial1$Region, windowstep = 5, windowsize = 50, delay = 1, embed = 1, rescale = 0, radius = 0.0001, normalize = 0, mindiagline = 2, minvertline = 2, tw = 0, whiteline = FALSE, recpt = FALSE, side = "both")
+)
+####
+
+suppressWarnings(
+
+winprofile_d1t2 <- wincrqa(ts1 = dyad01_p01_s01b_trial2$Region, ts2 = dyad01_p02_s01y_trial2$Region, windowstep = 5, windowsize = 50, delay = 1, embed = 1, rescale = 0, radius = 0.0001, normalize = 0, mindiagline = 2, minvertline = 2, tw = 0, whiteline = FALSE, recpt = FALSE, side = "both")
+)
+suppressWarnings(
+
+winprofile_d2t2 <- wincrqa(ts1 = dyad02_p03_s02b_trial2$Region, ts2 = dyad02_p04_s02y_trial2$Region, windowstep = 5, windowsize = 50, delay = 1, embed = 1, rescale = 0, radius = 0.0001, normalize = 0, mindiagline = 2, minvertline = 2, tw = 0, whiteline = FALSE, recpt = FALSE, side = "both")
+)
+suppressWarnings(
+
+winprofile_d3t2 <- wincrqa(ts1 = dyad03_p05_s03b_trial2$Region, ts2 = dyad03_p06_s03y_trial2$Region, windowstep = 5, windowsize = 50, delay = 1, embed = 1, rescale = 0, radius = 0.0001, normalize = 0, mindiagline = 2, minvertline = 2, tw = 0, whiteline = FALSE, recpt = FALSE, side = "both")
+
+)
+
+
+
+```
+
+
+
+
+Plotting RPs, DCRPs and windowed recurrence plots
+```{r}
+#####   Recurrence Plots
+#Trial1
+image(RA_dyad1_trial1$RP[nrow(RA_dyad1_trial1$RP):1, ])
+image(RA_dyad2_trial1$RP[nrow(RA_dyad2_trial1$RP):1, ])
+image(RA_dyad3_trial1$RP[nrow(RA_dyad3_trial1$RP):1, ])
+
+#Trial2
+image(RA_dyad1_trial2$RP[nrow(RA_dyad1_trial2$RP):1, ])
+image(RA_dyad2_trial2$RP[nrow(RA_dyad2_trial2$RP):1, ])
+image(RA_dyad3_trial2$RP[nrow(RA_dyad3_trial2$RP):1, ])
+
+
+
+
+#####   DCRPs
+#Trial 1
+plot(timecourse, DCRP_dyad1_trial1$profile, type = "l", lwd = 5, xlab = "Lag (seconds)", ylab = "RR", main = "Dyad1 - silence")
+abline(v = timecourse[DCRP_dyad1_trial1$maxlag],
+       lty = 2, col = "gray40", lwd = 3)
+mtext(paste("Max Lag:", timecourse[DCRP_dyad1_trial1$maxlag], "sec."),
+      at = timecourse[DCRP_dyad1_trial1$maxlag] + 1.2, side = 3, col = "red", line = -1.2,
+      cex = .8)
+
+
+plot(timecourse, DCRP_dyad2_trial1$profile, type = "l", lwd = 5, xlab = "Lag (seconds)", ylab = "RR", main = "Dyad2 - silence")
+abline(v = timecourse[DCRP_dyad2_trial1$maxlag],
+       lty = 2, col = "gray40", lwd = 3)
+mtext(paste("Max Lag:", timecourse[DCRP_dyad2_trial1$maxlag], "sec."),
+      at = timecourse[DCRP_dyad2_trial1$maxlag] + 1.2, side = 3, col = "red", line = -1.2,
+      cex = .8)
+
+
+plot(timecourse, DCRP_dyad3_trial1$profile, type = "l", lwd = 5, xlab = "Lag (seconds)", ylab = "RR", main = "Dyad3 - silence")
+abline(v = timecourse[DCRP_dyad3_trial1$maxlag],
+       lty = 2, col = "gray40", lwd = 3)
+mtext(paste("Max Lag:", timecourse[DCRP_dyad3_trial1$maxlag], "sec."),
+      at = timecourse[DCRP_dyad3_trial1$maxlag] + 1.2, side = 3, col = "red", line = -1.2,
+      cex = .8)
+
+
+#Trial 2
+plot(timecourse, DCRP_dyad1_trial2$profile, type = "l", lwd = 5, xlab = "Lag (seconds)", ylab = "RR", main = "Dyad1 - conversation")
+abline(v = timecourse[DCRP_dyad1_trial2$maxlag],
+       lty = 2, col = "gray40", lwd = 3)
+mtext(paste("Max Lag:", timecourse[DCRP_dyad1_trial2$maxlag], "sec."),
+      at = timecourse[DCRP_dyad1_trial2$maxlag] + 1.2, side = 3, col = "red", line = -1.2,
+      cex = .8)
+
+
+plot(timecourse, DCRP_dyad2_trial2$profile, type = "l", lwd = 5, xlab = "Lag (seconds)", ylab = "RR", main = "Dyad2 - conversation")
+abline(v = timecourse[DCRP_dyad2_trial2$maxlag],
+       lty = 2, col = "gray40", lwd = 3)
+mtext(paste("Max Lag:", timecourse[DCRP_dyad2_trial2$maxlag], "sec."),
+      at = timecourse[DCRP_dyad2_trial2$maxlag] + 1.2, side = 3, col = "red", line = -1.2,
+      cex = .8)
+
+
+plot(timecourse, DCRP_dyad3_trial2$profile, type = "l", lwd = 5, xlab = "Lag (seconds)", ylab = "RR", main = "Dyad3 - conversation")
+abline(v = timecourse[DCRP_dyad3_trial2$maxlag],
+       lty = 2, col = "gray40", lwd = 3)
+mtext(paste("Max Lag:", timecourse[DCRP_dyad3_trial2$maxlag], "sec."),
+      at = timecourse[DCRP_dyad3_trial2$maxlag] + 1.2, side = 3, col = "red", line = -1.2,
+      cex = .8)
+
+
+####   Windowed Recurrence Plots
+#Trial 1
+plot(winprofile_d1t1$RR, type = "l", , xlab = "seconds", ylab = "RR", main = "Dyad1 - silence")
+plot(winprofile_d2t1$RR, type = "l", , xlab = "seconds", ylab = "RR", main = "Dyad2 - silence")
+plot(winprofile_d3t1$RR, type = "l", , xlab = "seconds", ylab = "RR", main = "Dyad3 - silence")
+
+#Trial 2
+plot(winprofile_d1t2$RR, type = "l", , xlab = "seconds", ylab = "RR", main = "Dyad1 - conversation")
+plot(winprofile_d2t2$RR, type = "l", , xlab = "seconds", ylab = "RR", main = "Dyad2 - conversation")
+plot(winprofile_d3t2$RR, type = "l", , xlab = "seconds", ylab = "RR", main = "Dyad3 - conversation")
+
+
+```
