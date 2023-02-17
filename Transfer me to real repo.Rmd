@@ -11,11 +11,12 @@ date: "`r Sys.Date()`"
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
+
+Go to the folder where data are located:
 ```{r}
 
+setwd("C:/Users/harap/OneDrive/Psychologie Studium/PhD/UBC/Dual mET Plexi/PAPER/data analysis/shiny-eyes") #set this to where your data is located
 ```
-
-
 
 Required libraries:
 ```{r}
@@ -33,50 +34,53 @@ library(ggpubr)
 
 ```
 
-Go to the folder where data are located:
-```{r}
-
-setwd("C:/Users/iView/Desktop/Haraped/dyad 01-03") #set this to where your data is located
-```
-
 Load Data
 ```{r}
 
-# Loading the raw data files from Walter.
+# Set the directory where the CSV files are located
+csv_dir <- "C:/Users/harap/OneDrive/Psychologie Studium/PhD/UBC/Dual mET Plexi/PAPER/data analysis/shiny-eyes/dyad_1_to_3"
+
+# Get a list of all the CSV files in the directory
+csv_files <- list.files(path = csv_dir, pattern = "*.csv", full.names = TRUE)
 
 
-#Dyad1
-dyad01_p01_s01b_trial1 <- read.delim("dyad01-p01_s01b-trial1.csv",header=TRUE,fill=TRUE,sep = ",", dec = ".")
+# Create an empty list to store the resulting data frames
+ts_list <- list()
 
-dyad01_p01_s01b_trial2 <- read.delim("dyad01-p01_s01b-trial2.csv",header=TRUE,fill=TRUE,sep = ",", dec = ".")
+# Create empty lists to store the filtered data frames
+ts_list_trial_1 <- list()
+ts_list_trial_2 <- list()
 
-dyad01_p02_s01y_trial1 <- read.delim("dyad01-p02_s01y-trial1.csv",header=TRUE,fill=TRUE,sep = ",", dec = ".")
+# Loop over the file names, read in each file, and store it in a data frame with the same name as the file
+for (i in seq_along(csv_files)) {
+  # Extract the file name without extension
+  file_name <- gsub(".csv", "", basename(csv_files[i]))
+  # Read in the CSV file
+  data_frame <- read.delim(csv_files[i], header = TRUE, fill = TRUE, sep = ",", dec = ".")
+  # Assign the data frame to an object with the same name as the file
+  assign(file_name, data_frame)
+  # Read in the CSV file and add the resulting data frame to the list with the same name as the file
+  ts_list[[file_name]] <- read.delim(csv_files[i], header = TRUE, fill = TRUE, sep = ",", dec = ".")
+}
 
-dyad01_p02_s01y_trial2 <- read.delim("dyad01-p02_s01y-trial2.csv",header=TRUE,fill=TRUE,sep = ",", dec = ".")
 
-#Dyad2
-dyad02_p03_s02b_trial1 <- read.delim("dyad02-p03_s02b-trial1.csv",header=TRUE,fill=TRUE,sep = ",", dec = ".")
-
-dyad02_p03_s02b_trial2 <- read.delim("dyad02-p03_s02b-trial2.csv",header=TRUE,fill=TRUE,sep = ",", dec = ".")
-
-dyad02_p04_s02y_trial1 <- read.delim("dyad02-p04_s02y-trial1.csv",header=TRUE,fill=TRUE,sep = ",", dec = ".")
-
-dyad02_p04_s02y_trial2 <- read.delim("dyad02-p04_s02y-trial2.csv",header=TRUE,fill=TRUE,sep = ",", dec = ".")
-
-
-#Dyad3
-dyad03_p05_s03b_trial1 <- read.delim("dyad03-p05_s03b-trial1.csv",header=TRUE,fill=TRUE,sep = ",", dec = ".")
-
-dyad03_p05_s03b_trial2 <- read.delim("dyad03-p05_s03b-trial2.csv",header=TRUE,fill=TRUE,sep = ",", dec = ".")
-
-dyad03_p06_s03y_trial1 <- read.delim("dyad03-p06_s03y-trial1.csv",header=TRUE,fill=TRUE,sep = ",", dec = ".")
-
-dyad03_p06_s03y_trial2 <- read.delim("dyad03-p06_s03y-trial2.csv",header=TRUE,fill=TRUE,sep = ",", dec = ".")
+# Loop over all the data frames in ts_list
+for (i in seq_along(ts_list)) {
+  # Extract the name of the data frame
+  data_frame_name <- names(ts_list[i])
+  # Check if the name ends with "trial1"
+  if (grepl("trial1$", data_frame_name)) {
+    # If it does, add the data frame to ts_list_trial_1
+    ts_list_trial_1[[data_frame_name]] <- ts_list[[data_frame_name]]
+  } else if (grepl("trial2$", data_frame_name)) {
+    # If it ends with "trial2", add the data frame to ts_list_trial_2
+    ts_list_trial_2[[data_frame_name]] <- ts_list[[data_frame_name]]
+  }
+}
 
 
 
 ```
-
 
 
 
